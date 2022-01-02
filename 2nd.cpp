@@ -3,20 +3,8 @@
 #include<string.h>
 #include<string>
 #include<stdio.h>
-#include"main.h"
-extern const int MAXLINE=1005;
-extern const int MAXFILE=100005;
-struct Terminal
-{
-    char user[MAXLINE];   // 用户名
-    char mach[MAXLINE];   // 计算机名
-    char root[MAXLINE];   // 根目录
-    char wdir[MAXLINE];   // 工作目录
-    char strin[MAXFILE];  // 重定向标准输入
-    char strout[MAXFILE]; // 重定向标准输出
-};
-extern Terminal gTerm;
 using namespace std;
+extern Terminal gTerm;
 void doGrep(int argc,char *argv[])
 {
     int len1,out=0;//out记录strout到哪了
@@ -34,7 +22,7 @@ void doGrep(int argc,char *argv[])
     k=0;
     if(q==true)
     {
-        char f[]="help:\n-c：输出符合样式的行数\n-h：在显示符合样式的那一行之前，不标示该行所属的文件名称\n-H：在显示符合样式的那一行之前，标示该行所属的文件名称\n-i：忽略字符大小写的差别-n：在显示符合样式的那一行之前，标示出该行的编号\n-A[行数]：除了显示符合范本样式的那一列之外，同时显示该行之后的[行数]行内容\n-B[行数]：除了显示符合样式的那一行之外，同时显示该行之前的[行数]内容\n输出标准样式：grep -h -H -I -n -c -A[行数] -B[行数] 模式串 文件";
+        char f[]="help:\n-c：输出符合样式的行数\n-h：在显示符合样式的那一行之前，不标示该行所属的文件名称\n-H：在显示符合样式的那一行之前，标示该行所属的文件名称\n-i：忽略字符大小写的差别-n：在显示符合样式的那一行之前，标示出该行的编号\n-A[行数]：除了显示符合范本样式的那一列之外，同时显示该行之后的[行数]行内容\n-B[行数]：除了显示符合样式的那一行之外，同时显示该行之前的[行数]内容\n输出标准样式：grep -h -H -I -n -c -A[行数] -B[行数] 模式串 文件\n";
         strcat(gTerm.strout,f);
         return;
     }
@@ -142,18 +130,9 @@ void doGrep(int argc,char *argv[])
             num++;
         }
     }
-    char openfile[1005];
-    char rootdir[1005];
-    char workdir[1005];
-    for(int ii=0;ii<1005;ii++)
-    {
-        openfile[ii]=0;
-        rootdir[ii]=0;
-        workdir[ii]=0;
-    }
-    if(gTerm.root[0]!='/')
-    {rootdir[0]='/';
-    rootdir[1]=0;}
+    char openfile[1005]={0};
+    char rootdir[1005]={0};
+    char workdir[1005]={0};
     strcat(rootdir,gTerm.root);
     if(gTerm.wdir[0]!='/')
     {workdir[0]='/';
@@ -172,6 +151,7 @@ void doGrep(int argc,char *argv[])
     z++;
     int w=1,zhi=0,wei=0,w1=0,w2=0;//zhi和wei用于b命令的计数，w1w2用于记录应输出多少个bline字符串
     string bline[bshu+1];//存前面n个字符串，以符合-B的功能
+    gTerm.strout[0]=0;
     for(;z<argc;z++){
         openfile[0]=0;
         if(argv[z][0]=='/')
@@ -206,6 +186,7 @@ void doGrep(int argc,char *argv[])
         while(run)
         {   
             len2=0;
+            s[0]=0;
             if(op==true){
                 if(!getline(fin,s,'\n'))//每次从文件中读入一行到s中，行结束标志为\n
                 {
@@ -217,17 +198,17 @@ void doGrep(int argc,char *argv[])
             {
                 while(gTerm.strin[len]!='\n'&&gTerm.strin[len]!=EOF&&gTerm.strin[len]!=0)//每次从标准输入中读入一行到s中，行结束标志为\n
                 {
-                    s[len2]=gTerm.strin[len];
+                    s+=gTerm.strin[len];
                     len2++;
                     len++;
+                    
                 }
-                
                 if(gTerm.strin[len]==EOF||gTerm.strin[len]==0)
                 {
                     run=false;
                 }
                 len++;
-                s[len2]='\0';
+                s+='\0';
                 
             }
             k=0;
@@ -454,7 +435,7 @@ void doGrep(int argc,char *argv[])
                             out++;
                             gTerm.strout[out]=0;
                         }
-                        else if(a1==beg)
+                        if(a1==beg)
                         {
                             char f[]="\e[91;1m";
                             strcat(gTerm.strout,f);
@@ -463,12 +444,16 @@ void doGrep(int argc,char *argv[])
                             out++;
                             gTerm.strout[out]=0;
                         }
-                        else if(a1==end)
+                        if(a1==end)
                         {
-                            gTerm.strout[out]=s[a1];
+                            if(end!=beg)
+                           { gTerm.strout[out]=s[a1];
+                            out++;
+                            gTerm.strout[out]=0;}
                             char f[]="\e[0m";
                             strcat(gTerm.strout,f);
                             out=strlen(gTerm.strout);
+                            gTerm.strout[out]=0;
                         }
                     }
                     gTerm.strout[out]='\n';
@@ -553,7 +538,4 @@ void doGrep(int argc,char *argv[])
         if(op==true)
         fin.close();
     }
-    gTerm.strout[out]='\n';
-    out++;
-    gTerm.strout[out]=0;
 }
