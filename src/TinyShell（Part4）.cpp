@@ -6,24 +6,24 @@
 using namespace std;
 
 struct Terminal {
-	char user[MAXLINE]; // ÓÃ»§Ãû
-	char mach[MAXLINE]; // ¼ÆËã»úÃû
-	char root [MAXLINE]; // ¸ùÄ¿Â¼
-	char wdir [MAXLINE]; // ¹¤×÷Ä¿Â¼
-	char strin[MAXFILE]; // ÖØ¶¨Ïò±ê×¼ÊäÈë
-	char strout[MAXFILE]; // ÖØ¶¨Ïò±ê×¼Êä³ö
+	char user[MAXLINE]; // ç”¨æˆ·å
+	char mach[MAXLINE]; // è®¡ç®—æœºå
+	char root [MAXLINE]; // æ ¹ç›®å½•
+	char wdir [MAXLINE]; // å·¥ä½œç›®å½•
+	char strin[MAXFILE]; // é‡å®šå‘æ ‡å‡†è¾“å…¥
+	char strout[MAXFILE]; // é‡å®šå‘æ ‡å‡†è¾“å‡º
 };
 Terminal gTerm;
 
-char input [MAXLEN];//ÓÃ»§ÊäÈëµÄÃüÁî 
-char commands [MAXNUM][MAXLEN];//²ğ·ÖºóµÄ½á¹û 
-char *poin[MAXLEN];//¸¨Öú²ÎÊıÊı×é 
-int count;//²ğ·ÖÊıÁ¿ 
+char input [MAXLEN];//ç”¨æˆ·è¾“å…¥çš„å‘½ä»¤ 
+char commands [MAXNUM][MAXLEN];//æ‹†åˆ†åçš„ç»“æœ 
+char *poin[MAXLEN];//è¾…åŠ©å‚æ•°æ•°ç»„ 
+int count;//æ‹†åˆ†æ•°é‡ 
 int i, j;
-char before[MAXLINE];//°´'|'²ğ·ÖºóÇ°ÃæµÄÃüÁî 
-char after[MAXLINE];//°´'|'²ğ·ÖºóºóÃæµÄÃüÁî 
+char before[MAXLINE];//æŒ‰'|'æ‹†åˆ†åå‰é¢çš„å‘½ä»¤ 
+char after[MAXLINE];//æŒ‰'|'æ‹†åˆ†ååé¢çš„å‘½ä»¤ 
 
-//³õÊ¼»¯ 
+//åˆå§‹åŒ– 
 void Initialize(){
 	memset (gTerm.strin, 0, sizeof(gTerm.strin));
 	memset (gTerm.strout, 0, sizeof(gTerm.strin));
@@ -31,17 +31,17 @@ void Initialize(){
 	memset (after, 0, sizeof(after));
 }
 
-//½ÓÊÜ×Ö·û´¢´æÔÚinputÖĞ
+//æ¥å—å­—ç¬¦å‚¨å­˜åœ¨inputä¸­
 int get(char input[]){
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset(input, 0, MAXLINE);
 	cin.getline(input, MAXLINE, '\n');
 	return strlen(input); 
 }
 
-//½âÎö×Ö·û´®
+//è§£æå­—ç¬¦ä¸²
 void cut(char *input){
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	 for (i = 0; i < MAXNUM; i++){
 	 	poin[i] = NULL;
 	 	memset (commands [i], 0, MAXLEN);
@@ -67,7 +67,7 @@ void cut(char *input){
 }
 
 
-//ÏÔÊ¾ÃüÁîÌáÊ¾·û 
+//æ˜¾ç¤ºå‘½ä»¤æç¤ºç¬¦ 
 void display(){
 	cout << "\e[92;1m" << gTerm.user << "@" << gTerm.mach;
 	cout << "\e[94;1m"<< gTerm.wdir;
@@ -75,15 +75,15 @@ void display(){
 	cout << "$ ";
 }
 
-//Ê¶±ğÖ¸Áî
+//è¯†åˆ«æŒ‡ä»¤
 void identify(char input[MAXFILE]){
 	cut (input);
-	 //µ¥¶À´¦ÀíquitÃüÁî
+	 //å•ç‹¬å¤„ç†quitå‘½ä»¤
     if(strcmp(commands[0],"quit") == 0){
         cout << "Thanks for using TinyShell!" << endl;
         exit(0);  
     }
-    //µ¥¶À´¦ÀíhelpÃüÁî 
+    //å•ç‹¬å¤„ç†helpå‘½ä»¤ 
 	else if(strcmp(commands[0], "help") == 0){
 		cout << "For detail information about a specific command,"
 		" please enter 'command' --help\n";
@@ -131,12 +131,12 @@ void identify(char input[MAXFILE]){
     }
 }
 
-//´¦Àí¸´ºÏÃüÁî 
+//å¤„ç†å¤åˆå‘½ä»¤ 
 void pipe(char input[MAXFILE]){
 	for (i = 0; input[i] != '\0'; i++){
 		if (input[i] == '|') break;
 	}
-	//·ÖÀëÖ¸Áî
+	//åˆ†ç¦»æŒ‡ä»¤
 	memset (before, 0, MAXFILE);
 	memset (after, 0, MAXFILE);
 	for (j = 0; j < i - 1; j++){
@@ -147,7 +147,7 @@ void pipe(char input[MAXFILE]){
 	} 
 }
 
-//¼ÇÂ¼¸´ºÏ´ÎÊı 
+//è®°å½•å¤åˆæ¬¡æ•° 
 int countpipe(char input[MAXFILE]){
 	int temp = 0;
 	for (i = 0; input[i] != '\0'; i++){
@@ -156,16 +156,16 @@ int countpipe(char input[MAXFILE]){
 	return temp;
 }
 
-//EchoÃüÁî 
+//Echoå‘½ä»¤ 
 void doEcho(int argc, char * argv[]){
-	//-n ²»»»ĞĞÊä³ö 
+	//-n ä¸æ¢è¡Œè¾“å‡º 
 	if (strcmp(argv[1] , "-n") == 0){
 	int temp = 0;
 		for (int k = 2; k <= argc; k++){
 			temp += sprintf(gTerm.strout + temp, "%s ", argv[k]);
 		}
 	}
-	//²ÊÉ«Êä³ö 
+	//å½©è‰²è¾“å‡º 
 	else if (strcmp(argv[1], "-r") == 0){
 		int temp = sprintf(gTerm.strout, "\e[91;1m");
 		for (int k = 2; k <= argc; k++){
@@ -187,7 +187,7 @@ void doEcho(int argc, char * argv[]){
 		}
 		sprintf(gTerm.strout + temp, "\n");
 	}
-	//--helpÖ¸Áî 
+	//--helpæŒ‡ä»¤ 
 	else if (strcmp(argv[1] , "--help") == 0) {
 		sprintf(gTerm.strout, "Echo the STRING(s) to standard output.\n"
 		"-n     do not output the trailing newline\n"
@@ -195,7 +195,7 @@ void doEcho(int argc, char * argv[]){
 		"-g     Echo in color green\n"
 		"-b     Echo in color blue\n");
 	}
-	//Ä¬ÈÏ»»ĞĞÊä³ö 
+	//é»˜è®¤æ¢è¡Œè¾“å‡º 
 	else {
 		int temp = 0;
 		for (int k = 1; k <= argc; k++){
@@ -241,24 +241,3 @@ void doLen(int argc, char * argv[]){
 	sprintf(gTerm.strout, "%d\n", temp);
 }
 
-void doDiff(int argc, char * argv[]){
-	gTerm.strout[0] = '1';
-}
-void doGrep(int argc, char * argv[]){
-	gTerm.strout[0] = '2';
-}
-void doTee(int argc, char * argv[]){
-	gTerm.strout[0] = '3';
-}
-void doCat(int argc, char * argv[]){
-	gTerm.strout[0] = '4';
-}
-void doCp(int argc, char * argv[]){
-	gTerm.strout[0] = '5';
-}
-void doCd(int argc, char * argv[]){
-	gTerm.strout[0] = '6';
-}
-void doPwd(int argc, char * argv[]){
-	gTerm.strout[0] = '7';
-}
