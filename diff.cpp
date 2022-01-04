@@ -5,6 +5,7 @@
 #include<string>   //string
 #include<stdio.h>  //freopen
 #include<sstream>  //stringstream
+
 using namespace std;
 
 const int MAXLINE = 255;
@@ -20,18 +21,7 @@ struct fileInLine {
  fileInLine file_input[2];
 
 //两个文件的匹配情况
- int match[MAXROW];
-
-//终端定义
-struct Terminal {
-	char user[MAXLINE];
-	char mach[MAXLINE];
-	char root[MAXLINE];
-	char wdir[MAXLINE];
-	char strin[MAXFILE];
-	char strout[MAXFILE];
-};
-Terminal gTerm;
+int match[MAXROW];
 
 //输出帮助文档
 void diff_help() {
@@ -312,6 +302,7 @@ bool isLineBlank(string line) {
 	}
 	return true;
 }
+
 //根据match匹配对将结果输出到屏幕上
 //这里需要处理-B命令
 //注意-B命令和-w -b复合时，只有空格的行也认为是空白行
@@ -717,44 +708,4 @@ void doDiff(int argc,char* argv[]) { //debug 结束后修改argv为char*类型
 		cout.rdbuf(oldcout);
 	}
 	return;
-}
-
-void setTerminal() {
-	cout << "Machine Name:";
-	cin >> gTerm.mach;
-	cout << "Root Directory:";
-	cin >> gTerm.root;
-	char wdir[MAXLINE];
-	strcpy(wdir, gTerm.root);
-	strcat(wdir, "/");
-	strcpy(gTerm.wdir, wdir);
-	cout << "Login:";
-	cin >> gTerm.user;
-}
-
-void displayTips() {
-	cout << "\033[92;1m" << gTerm.user << "@" << gTerm.mach;
-	cout << "\033[0m:\033[94;1m/\033[0m$";
-}
-
-int main() {
-	setTerminal();
-	while (1) {
-		displayTips();
-		int num=0;
-		char** cmd = new char* [15];
-		for (int i = 0;i < 15;i++) {
-			cmd[i] = new char[MAXLINE];
-		}
-		while (cin >> cmd[num]) {
-			num++;
-			if (cin.get() == '\n') {
-				break;
-			}
-		}
-		doDiff(num, cmd); //debug 结束后修改argv为char*类型
-		cout << gTerm.strout;
-		gTerm.strout[0] = '\0';
-	}
-	return 0;
 }
