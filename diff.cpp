@@ -1,10 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include<iostream> //cin cout
-#include<fstream>  //open close
-#include<string>   //string
-#include<stdio.h>  //freopen
-#include<sstream>  //stringstream
+#include <iostream> //cin cout
+#include <fstream>  //open close
+#include <string>   //string
+#include <stdio.h>  //freopen
+#include <sstream>  //stringstream
+#include "tinyshell.h"
 
 using namespace std;
 
