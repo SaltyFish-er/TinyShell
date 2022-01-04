@@ -100,25 +100,25 @@ void identify(char input[MAXFILE]){
 		cout <<"len  	output the length of strin (including \\n)\n";	 
 	}
 	else if (strcmp (commands[0] , "diff") == 0){
-    	doDiff(count, poin);
+    	doDiff(count + 1, poin);
    	}
    	else if (strcmp (commands[0] , "grep") == 0){
-    	doGrep(count, poin);
+    	doGrep(count + 1, poin);
     }
     else if (strcmp (commands[0] , "tee") == 0){
-    	doTee(count, poin);
+    	doTee(count + 1, poin);
     }
     else if (strcmp (commands[0] , "cat") == 0){
-    	doCat(count, poin);
+    	doCat(count + 1, poin);
     }
     else if (strcmp (commands[0] , "cp") == 0){
-    	doCp(count, poin);
+    	doCp(count + 1, poin);
     }
     else if (strcmp (commands[0] , "cd") == 0){
-    	doCd(count, poin);
+    	doCd(count + 1, poin);
     }
     else if (strcmp (commands[0] , "pwd") == 0){
-    	doPwd(count, poin);
+    	doPwd(count + 1, poin);
     }
     else if (strcmp (commands[0] , "echo") == 0){
     	doEcho(count, poin);
