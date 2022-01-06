@@ -5,12 +5,10 @@
 #include <string>   //string
 #include <stdio.h>  //freopen
 #include <sstream>  //stringstream
-#include "tinyshell.h"
-
+#include <cstring>
+#include "heads.h"
 using namespace std;
 
-const int MAXLINE = 255;
-const int MAXFILE = 65535;
 const int MAXROW = 2047;
 const int SEARCHDEPTH = 5;
 
@@ -22,7 +20,7 @@ struct fileInLine {
  fileInLine file_input[2];
 
 //两个文件的匹配情况
-int match[MAXROW];
+ int match[MAXROW];
 
 //输出帮助文档
 void diff_help() {
@@ -42,9 +40,9 @@ void diff_help() {
 //如果输入为"-"直接返回
 //函数中new给absolutePath的空间将在read函数中delete
 char* getPath(const char* path) {
-	char* absolutePath = new char[MAXLINE];
+	char* absolutePath = new char[1005];
 	if (path[0] == '\\' || path[0] == '/') {
-		char root[MAXLINE];
+		char root[1005];
 		strcpy(root, gTerm.root);
 		strcat(root, path);
 		strcpy(absolutePath, root);
@@ -53,7 +51,7 @@ char* getPath(const char* path) {
 		strcpy(absolutePath, path);
 	}
 	else {
-		char wdir[MAXLINE];
+		char wdir[1005];
 		strcpy(wdir, gTerm.wdir);
 		strcat(wdir, path);
 		strcpy(absolutePath, wdir);
@@ -87,7 +85,7 @@ bool read(int argc,char* argv[]) { //debug 结束后修改argv为char*类型
 	ifstream file;
 	for (int i = 0;i < 2;i++) {
 		if (!strcmp(in_file[i],"-")) {
-			char temp[MAXLINE];
+			char temp[1005];
 			for (int x = 0, j = 0, k = 0;;) {
 				if (gTerm.strin[x] == '\n') {
 					temp[k] = '\0';
@@ -303,7 +301,6 @@ bool isLineBlank(string line) {
 	}
 	return true;
 }
-
 //根据match匹配对将结果输出到屏幕上
 //这里需要处理-B命令
 //注意-B命令和-w -b复合时，只有空格的行也认为是空白行
@@ -616,22 +613,9 @@ bool cmp(bool params[6],char* key) {
 	return same;
 }
 
-void doDiff(int argc,char* argv[]) { //debug 结束后修改argv为char*类型
-	//初步判断命令输入是否正确
-	if (strcmp(argv[0], "diff")) { //for debug，整合模块后这部分工作由解释器框架完成
-		cerr << "diff: Incorrect call to diff, should be retrieved to other commands "<<endl;
-		return;
-	}
-	if (argc < 2) { 
-		cerr << "diff: Too few parameters passed in" << endl;
-		return;
-	}
-	if (argc > 9) {
-		cerr << "diff: Too many parameters passed in " << endl;
-		return;
-	}
-
+void doDiff(int argc, char* argv[]) { //debug 结束后修改argv为char*类型
 	//处理--help命令
+	//cout<<argc<<endl;
 	if (!strcmp(argv[1], "--help")) {
 		if (argc == 2) {
 			diff_help();
@@ -644,7 +628,7 @@ void doDiff(int argc,char* argv[]) { //debug 结束后修改argv为char*类型
 	}
 	
 	//获取命令选项并记录
-	char strLookup[MAXLINE];
+	char strLookup[1005];
 	const char* paramString[] = { "-b","-B","-i","-q","-w","-I" };
 	bool params[6];
 	memset(params, 0, sizeof(params));
