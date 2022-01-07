@@ -52,7 +52,8 @@ char* getPath(const char* path) {
 	}
 	else {
 		char wdir[1005];
-		strcpy(wdir, gTerm.wdir);
+		strcpy(wdir, gTerm.root);
+		strcat(wdir, gTerm.wdir);
 		strcat(wdir, path);
 		strcpy(absolutePath, wdir);
 	}
@@ -79,6 +80,8 @@ bool read(int argc,char* argv[]) { //debug 结束后修改argv为char*类型
 	char* in_file[2];
 	in_file[0] = getPath(argv[argc - 2]);
 	in_file[1] = getPath(argv[argc - 1]);
+	//cerr<<"in_file[0] is "<<in_file[0]<<endl;
+	//cerr<<"in_file[1] is "<<in_file[1]<<endl;
 	//将读入文件的行数初始化
 	file_input[0].lineCount = 0;
 	file_input[1].lineCount = 0;
@@ -117,6 +120,7 @@ bool read(int argc,char* argv[]) { //debug 结束后修改argv为char*类型
 				}
 			}
 			else {
+				//cerr << "wdir is:"<<gTerm.wdir<<endl;
 				cerr << "diff: " << argv[argc - 2 + i] << " No such file or directory" <<endl;
 				delete in_file[0];
 				delete in_file[1];
