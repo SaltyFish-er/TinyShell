@@ -10,8 +10,8 @@ char commands [64][128];//拆分后的结果
 char *poin[128];//辅助参数数组 
 int count;//拆分数量 
 int i, j;
-char before[MAXLINE];//按'|'拆分后前面的命令 
-char after[MAXLINE];//按'|'拆分后后面的命令 
+char before[64];//按'|'拆分后前面的命令 
+char after[256];//按'|'拆分后后面的命令 
 
 //初始化 
 void Initialize(){
@@ -24,8 +24,8 @@ void Initialize(){
 //接受字符储存在input中
 int get(char input[]){
 	//初始化
-	memset(input, 0, MAXLINE);
-	cin.getline(input, MAXLINE, '\n');
+	memset(input, 0, 64);
+	cin.getline(input, 64, '\n');
 	return strlen(input); 
 }
 
@@ -66,13 +66,13 @@ void display(){
 }
 
 //处理复合命令 
-void pipe(char input[MAXFILE]){
+void pipe(char input[256]){
 	for (i = 0; input[i] != '\0'; i++){
 		if (input[i] == '|') break;
 	}
 	//分离指令
-	memset (before, 0, MAXFILE);
-	memset (after, 0, MAXFILE);
+	memset (before, 0, 256);
+	memset (after, 0, 256);
 	for (j = 0; j < i - 1; j++){
 		before [j] = input [j];
 	} 
@@ -82,7 +82,7 @@ void pipe(char input[MAXFILE]){
 }
 
 //记录复合次数 
-int countpipe(char input[MAXFILE]){
+int countpipe(char input[256]){
 	int temp = 0;
 	for (i = 0; input[i] != '\0'; i++){
 		if (input[i] == '|') temp++;
@@ -145,7 +145,7 @@ void doLen(int argc, char * argv[]){
 }
 
 //识别指令
-void identify(char input[MAXFILE]){
+void identify(char input[256]){
 	cut (input);
 	 //单独处理quit命令
     if(strcmp(commands[0],"quit") == 0){
@@ -203,11 +203,11 @@ void identify(char input[MAXFILE]){
 int main(int argc, char * argv[]){
 	memset(gTerm.wdir, '/', 1);
 	cout << "Machine Name:";
-	cin.getline(gTerm.mach, MAXLINE, '\n');
+	cin.getline(gTerm.mach, 64, '\n');
 	cout << "Root Directory:";
-	cin.getline(gTerm.root, MAXLINE, '\n');
+	cin.getline(gTerm.root, 64, '\n');
 	cout << "Login:";
-	cin.getline(gTerm.user, MAXLINE, '\n');
+	cin.getline(gTerm.user, 64, '\n');
 	while (1){
     	Initialize();
     	display();

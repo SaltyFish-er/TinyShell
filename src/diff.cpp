@@ -54,6 +54,9 @@ char* getPath(const char* path) {
 		char wdir[1005];
 		strcpy(wdir, gTerm.root);
 		strcat(wdir, gTerm.wdir);
+		if(strlen(gTerm.wdir)!=1){
+			strcat(wdir,"/");
+		}
 		strcat(wdir, path);
 		strcpy(absolutePath, wdir);
 	}

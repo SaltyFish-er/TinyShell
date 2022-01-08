@@ -30,10 +30,9 @@ void doCd(int argc,char* argv[]){
 			strcat(temp,"/");
 		}
 		strcat(temp,argv[1]);
-	}
 	if (strcmp(argv[1],"..")==0){
 		for (int i=strlen(temp)-1;i>=0;i--){
-			if (meetslash==1&&temp[i]=='/'){
+			if (meetslash<=1&&temp[i]=='/'){
 				meetslash++;
 				if (meetslash==2){
 					i--;
@@ -44,14 +43,15 @@ void doCd(int argc,char* argv[]){
 				idd++;
 			}
 		}
-		curpath[0]='/';
-		cid=1;
+		cid=0;
 		for (int x=strlen(temmp)-1;x>=0;x--){
 			if (!(temmp[x]=='/'&&temmp[x-1]=='/')){
 				curpath[cid]=temmp[x];
 				cid++;
-				cout<<curpath<<endl;
 			}
+		}
+		if (strcmp(curpath,"")==0){
+			curpath[0]='/';
 		}
 		strcpy(gTerm.wdir,curpath);
 	}
@@ -95,5 +95,9 @@ void doCd(int argc,char* argv[]){
 			}
 		}
 		strcpy(gTerm.wdir,curpath);
+	}
+	}
+	else if (argv[1][0]=='/'){
+		strcpy(gTerm.wdir,argv[1]);
 	}
 }
