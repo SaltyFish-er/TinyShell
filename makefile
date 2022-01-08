@@ -29,4 +29,4 @@ pt4.o:heads.h pt4.cpp
 	g++ -c pt4.cpp
 
 clean:
-	cmd //C del *.o main
+	cmd //C del *.o main main.exe
