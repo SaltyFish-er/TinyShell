@@ -31,12 +31,12 @@ void file_out(char* input){
 	}
 	else {
 		strcat(rootout,gTerm.wdir);
-		strcat(rootin,"/");
+		strcat(rootout,"/");
 		strcat(rootout,input);	
 	}
 }
 
-void outnum(int i){//Êä³öĞĞÊıÊı×ÖÇ°ºóµÄ¿Õ¸ñ
+void outnum(int i){//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ä¿Õ¸ï¿½
 	while (i>9){
 		a[id]=i%10;
 		i=i/10;
