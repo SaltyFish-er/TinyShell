@@ -6,11 +6,11 @@
 using namespace std;
 
 bool func[4]={false,false,false,false};
-char tempp[100000];
+int file_lo=1;
+char tempp[100000]={'\0'};
 int linenum=1;
 bool blank=false;
 bool valid=true;
-int file_lo=1;
 
 void find_func(int argc,char* argv[]){
 	for (int i=0;i<argc;i++){
@@ -18,25 +18,26 @@ void find_func(int argc,char* argv[]){
 			func[0]=true;
 			file_lo++;
 		}
-		if (strcmp(argv[i],"-E")==0){
+		else if (strcmp(argv[i],"-E")==0){
 			func[1]=true;
 			file_lo++;
 		}
-		if (strcmp(argv[i],"-n")==0){
+		else if (strcmp(argv[i],"-n")==0){
 			func[2]=true;
 			file_lo++;
 		}
-		if (strcmp(argv[i],"-s")==0){
+		else if (strcmp(argv[i],"-s")==0){
 			func[3]=true;
 			file_lo++;
 		}
-		else if (argv[i][0]=='-'){
+		else if (argv[i][0]=='-'&&strcmp(argv[1],"--help")!=0){
 			valid=false;
 		}
 	}
 }
 
 void doCat(int argc,char* argv[]){
+	find_func(argc,argv);
 	if (valid){
 	if (strcmp(argv[1],"--help")==0){
 		ifstream fin("cat --help.txt");
@@ -46,7 +47,6 @@ void doCat(int argc,char* argv[]){
 		fin.close();
 	}
 	else {
-		find_func(argc,argv);
 		for (int i=file_lo;i<argc;i++){
 			if (strcmp(argv[i],"-")==0){
 				strcat(tempp,gTerm.strin);
@@ -252,13 +252,7 @@ void doCat(int argc,char* argv[]){
 				if (func[1]){//有-E；-E 
 					for (string str;getline(fin,str);){
 						strcat(gTerm.strout,str.c_str());
-						if (strlen(str.c_str())==0){
-							strcat(gTerm.strout,"$");
-						}
-						else {
-							strcat(gTerm.strout,"$");
-						}
-						strcat(gTerm.strout,"\n");
+						strcat(gTerm.strout,"$\n");						
 					}
 				}
 				else {//无-E；啥都没有 
@@ -277,4 +271,12 @@ void doCat(int argc,char* argv[]){
 		cerr<<"cat: invalid option"<<endl;
 		cerr<<"Try 'cat --help' for more information."<<endl;
 	}
+	for (int i=0;i<4;i++){
+		func[i]=false;
+	}
+	file_lo=1;
+	tempp[100000]={'\0'};
+	linenum=1;
+	blank=false;
+	valid=true;
 }

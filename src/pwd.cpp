@@ -20,6 +20,7 @@ void doPwd(int argc,char* argv[]){
 		}
 	}
 	else if (argc==1){
-		cout<<gTerm.wdir<<endl;
+		strcpy(gTerm.strout,gTerm.wdir);
+		strcat(gTerm.strout,"\n");
 	}
 }
